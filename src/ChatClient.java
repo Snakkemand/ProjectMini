@@ -5,5 +5,7 @@ import java.awt.*;
 
 public class ChatClient extends Applet
 {
+    private Socket socket
+
     
 }
