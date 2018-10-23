@@ -3,7 +3,7 @@ import java.io.*;
 
 public class ChatServer implements Runnable {
 
-    private ChatServerThread client[]= new ChatServerThread[50]; //Maybe only set to 3 ?
+    private ChatServerThread clients[]= new ChatServerThread[50]; //Maybe only set to 3 ?
     private ServerSocket server=null;
     private Thread  thread=null;
     private int clientCount =0;
@@ -32,7 +32,6 @@ public class ChatServer implements Runnable {
     }
 
 
-}
 public void start(){
     if (thread==null){
         thread = new Thread(this);
@@ -99,6 +98,6 @@ public static void main (String args[]){
     if(args.length!=1)
         System.out.println("Usage: java ChatServer port");
     else
-        server = new ChatServer(Integer.perseInt(args[0]));
+        server = new ChatServer(Integer.parseInt(args[0]));
     }
 }
