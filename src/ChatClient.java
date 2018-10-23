@@ -34,8 +34,44 @@ public class ChatClient implements Runnable extends Applet {
         send(); input.requestFocus(); }
         return true;
     }
-                                                                                                   dfp
-                                                                                                    
+public void connect(String serverName, int serverPort)
+   {  println("Establishing connection. Please wait ...");
+      try
+      {  socket = new Socket(serverName, serverPort);
+         println("Connected: " + socket);
+         open(); send.enable(); connect.disable(); quit.enable(); }
+      catch(UnknownHostException uhe)
+      {  println("Host unknown: " + uhe.getMessage()); }
+      catch(IOException ioe)
+      {  println("Unexpected exception: " + ioe.getMessage()); } }
+   private void send()
+   {  try
+      {  streamOut.writeUTF(input.getText()); streamOut.flush(); input.setText(""); }
+      catch(IOException ioe)
+      {  println("Sending error: " + ioe.getMessage()); close(); } }
+   public void handle(String msg)
+   {  if (msg.equals(".bye"))
+      {  println("Good bye. Press RETURN to exit ...");  close(); }
+      else println(msg); }
+   public void open()
+   {  try
+      {  streamOut = new DataOutputStream(socket.getOutputStream());
+         client = new ChatClientThread(this, socket); }
+      catch(IOException ioe)
+      {  println("Error opening output stream: " + ioe); } }
+   public void close()
+   {  try
+      {  if (streamOut != null)  streamOut.close();
+         if (socket    != null)  socket.close(); }
+      catch(IOException ioe)
+      {  println("Error closing ..."); }
+      client.close();  client.stop(); }
+   private void println(String msg)
+   {  display.appendText(msg + "\n"); }
+   public void getParameters()
+   {  serverName = getParameter("host");
+      serverPort = Integer.parseInt(getParameter("port")); }
+}                                                                                                    
 
     public ChatClient(String serverName, int serverPort) {
         System.out.println("Establishing connection. Please wait...");
